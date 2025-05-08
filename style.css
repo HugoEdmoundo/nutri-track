@@ -1,0 +1,99 @@
+/* Warna dasar */
+:root {
+    --biru: #3498db;
+    --biru-tua: #2980b9;
+    --ijo: #2ecc71;
+    --merah: #e74c3c;
+    --kuning: #f39c12;
+    --putih: #ffffff;
+    --abu: #f5f7fa;
+    --abu-tua: #6c757d;
+}
+
+/* Gaya dasar */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--abu);
+}
+
+/* Header */
+.gradient-ijo {
+    background: linear-gradient(135deg, var(--biru), var(--biru-tua));
+}
+.text-putih {
+    color: var(--putih);
+}
+
+/* Tab */
+.aktif {
+    color: var(--biru) !important;
+    border-bottom: 3px solid var(--biru);
+}
+
+/* Kartu */
+.card-kita {
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    border: none;
+}
+.card-hasil {
+    border-left: 5px solid var(--biru);
+}
+
+/* Badge */
+.badge-ijo {
+    background: rgba(46, 204, 113, 0.1);
+    color: var(--ijo);
+}
+.badge-kuning {
+    background: rgba(243, 156, 18, 0.1);
+    color: var(--kuning);
+}
+.badge-merah {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--merah);
+}
+
+/* Progress bar */
+.progress-kita {
+    height: 10px;
+}
+
+/* Animasi hover */
+.card-saran:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+}
+
+/* Gambar saran */
+.gambar-saran {
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Text abu */
+.text-abu {
+    color: var(--abu-tua);
+}
+
+/* Tombol biru */
+.btn-biru {
+    background-color: var(--biru);
+    color: var(--putih);
+}
+
+/* Sembunyi */
+.sembunyi {
+    display: none;
+}
+
+/* Responsif buat HP */
+@media (max-width: 768px) {
+    .aktif {
+        border-bottom: none;
+        border-left: 3px solid var(--biru);
+    }
+}

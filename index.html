@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriTrack - Pantau Gizi & Kalori</title>
+    <!-- Nyolong CSS dari internet biar cepet -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Nyolong Chart.js buat grafik -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- CSS kita sendiri -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="gradient-ijo text-putih py-4 mb-4">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="mb-1">NutriTrack</h1>
+                    <p class="mb-0">Pantau Gizi & Kalori Sehari-hari</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Konten Utama -->
+    <main class="container mb-5">
+        <!-- Tab Menu -->
+        <ul class="nav nav-tabs bg-putih rounded mb-4" id="tabMenu" role="tablist">
+            <li class="nav-item flex-grow-1 text-center" role="presentation">
+                <button class="nav-link aktif w-100 py-3" id="tab-makro" data-bs-toggle="tab" data-bs-target="#makro" type="button">
+                    <i class="fas fa-utensils me-2"></i> Makronutrien
+                </button>
+            </li>
+            <li class="nav-item flex-grow-1 text-center" role="presentation">
+                <button class="nav-link w-100 py-3" id="tab-kalori" data-bs-toggle="tab" data-bs-target="#kalori" type="button">
+                    <i class="fas fa-fire me-2"></i> Kalori
+                </button>
+            </li>
+            <li class="nav-item flex-grow-1 text-center" role="presentation">
+                <button class="nav-link w-100 py-3" id="tab-target" data-bs-toggle="tab" data-bs-target="#target" type="button">
+                    <i class="fas fa-bullseye me-2"></i> Target
+                </button>
+            </li>
+        </ul>
+        
+        <!-- Isi Tab -->
+        <div class="tab-content">
+            <!-- Tab Makronutrien -->
+            <div class="tab-pane fade show aktif" id="makro" role="tabpanel">
+                <div class="card card-kita mb-4">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3"><i class="fas fa-utensils text-biru me-2"></i>Pantau Makronutrien</h2>
+                        <p class="text-abu">Masukin makanan lo buat dapet analisis gizi.</p>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="input-karbo" class="form-label">Karbo</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-bread-slice"></i></span>
+                                    <input type="number" class="form-control" id="input-karbo" placeholder="Gram (g)">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="input-protein" class="form-label">Protein</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-drumstick-bite"></i></span>
+                                    <input type="number" class="form-control" id="input-protein" placeholder="Gram (g)">
+                                </div>
+                               </div>
+                            <div class="col-md-4">
+                                <label for="input-lemak" class="form-label">Lemak</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-cheese"></i></span>
+                                    <input type="number" class="form-control" id="input-lemak" placeholder="Gram (g)">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-biru" onclick="hitungMakro()">
+                            <i class="fas fa-calculator me-2"></i> Hitung
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Hasil -->
+                <div id="hasil-makro" class="card card-kita mb-4 sembunyi">
+                    <div class="card-body card-hasil">
+                        <h3 class="h5 mb-3"><i class="fas fa-chart-pie text-biru me-2"></i>Hasil Gizi</h3>
+                        <div class="row" id="isi-hasil-makro">
+                            <!-- Bakal diisi JS -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Grafik -->
+                <div class="card card-kita mb-4">
+                    <div class="card-body">
+                        <div class="tempat-grafik" style="height: 300px;">
+                            <canvas id="grafik-makro"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Saran Makanan -->
+                <div class="card card-kita">
+                    <div class="card-body">
+                        <h3 class="h5 mb-3"><i class="fas fa-lightbulb text-biru me-2"></i>Rekomendasi Makanan</h3>
+                        <p class="text-abu">Berdasarkan makanan lo:</p>
+                        <div class="row g-3" id="saran-makanan">
+                            <!-- Bakal diisi JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab Kalori -->
+            <div class="tab-pane fade" id="kalori" role="tabpanel">
+                <div class="card card-kita mb-4">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3"><i class="fas fa-fire text-biru me-2"></i>Hitung Kalori</h2>
+                        <p class="text-abu">Masukin data diri sama makanan lo.</p>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <label for="input-umur" class="form-label">Umur</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-birthday-cake"></i></span>
+                                    <input type="number" class="form-control" id="input-umur" placeholder="Tahun">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="input-berat" class="form-label">Berat</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-weight"></i></span>
+                                    <input type="number" class="form-control" id="input-berat" placeholder="Kg">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="input-tinggi" class="form-label">Tinggi</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-ruler-vertical"></i></span>
+                                    <input type="number" class="form-control" id="input-tinggi" placeholder="Cm">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="select-jenis-kelamin" class="form-label">Jenis Kelamin</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
+                                    <select class="form-select" id="select-jenis-kelamin">
+                                        <option value="cowo">Cowok</option>
+                                        <option value="cewe">Cewek</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="select-aktivitas" class="form-label">Aktivitas</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-running"></i></span>
+                                    <select class="form-select" id="select-aktivitas">
+                                        <option value="malas">Mageran</option>
+                                        <option value="ringan">Ringan (1-3x/minggu)</option>
+                                        <option value="sedang">Sedang (3-5x/minggu)</option>
+                                        <option value="aktif">Aktif (6-7x/minggu)</option>
+                                        <option value="sangat-aktif">Gila-gilaan (Tiap hari)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="input-kalori" class="form-label">Kalori Hari Ini</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-bolt"></i></span>
+                                    <input type="number" class="form-control" id="input-kalori" placeholder="Kkal">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="select-target" class="form-label">Target</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-bullseye"></i></span>
+                                    <select class="form-select" id="select-target">
+                                        <option value="jaga">Jaga Berat</option>
+                                        <option value="turun">Turunin Berat</option>
+                                        <option value="naik">Naikin Berat</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-biru" onclick="hitungKalori()">
+                            <i class="fas fa-calculator me-2"></i> Hitung
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Hasil -->
+                <div id="hasil-kalori" class="card card-kita mb-4 sembunyi">
+                    <div class="card-body card-hasil">
+                        <h3 class="h5 mb-3"><i class="fas fa-chart-line text-biru me-2"></i>Hasil Kalori</h3>
+                        <div class="row" id="isi-hasil-kalori">
+                            <!-- Bakal diisi JS -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Grafik -->
+                <div class="card card-kita mb-4">
+                    <div class="card-body">
+                        <div class="tempat-grafik" style="height: 300px;">
+                            <canvas id="grafik-kalori"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Riwayat -->
+                <div class="card card-kita">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="h5 mb-0"><i class="fas fa-history text-biru me-2"></i>Riwayat 7 Hari</h3>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="hapusRiwayat()">
+                                <i class="fas fa-trash me-1"></i> Hapus
+                            </button>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="table" id="tabel-riwayat">
+                                <thead>
+                                    <tr>
+                                        <th>Hari</th>
+                                        <th>Kalori</th>
+                                        <th>Status</th>
+                                        <th>Saran</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="isi-riwayat">
+                                    <!-- Bakal diisi JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="riwayat-kosong" class="text-center py-4">
+                            <i class="fas fa-clipboard-list text-abu mb-3" style="font-size: 3rem;"></i>
+                            <h4 class="h5">Belum Ada Data</h4>
+                            <p class="text-abu">Mulai pantau kalori buat liat riwayat.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab Target -->
+            <div class="tab-pane fade" id="target" role="tabpanel">
+                <div class="card card-kita mb-4">
+                    <div class="card-body">
+                        <h2 class="h4 mb-3"><i class="fas fa-bullseye text-biru me-2"></i>Atur Target</h2>
+                        <p class="text-abu">Setel target gizi harian lo.</p>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="target-kalori" class="form-label">Target Kalori</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-bullseye"></i></span>
+                                    <input type="number" class="form-control" id="target-kalori" placeholder="Kkal">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="target-karbo" class="form-label">Target Karbo</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-bullseye"></i></span>
+                                    <input type="number" class="form-control" id="target-karbo" placeholder="Gram (g)">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="target-protein" class="form-label">Target Protein</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-bullseye"></i></span>
+                                    <input type="number" class="form-control" id="target-protein" placeholder="Gram (g)">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="target-lemak" class="form-label">Target Lemak</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-bullseye"></i></span>
+                                    <input type="number" class="form-control" id="target-lemak" placeholder="Gram (g)">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-biru" onclick="simpanTarget()">
+                            <i class="fas fa-save me-2"></i> Simpan
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Progress -->
+                <div class="card card-kita mb-4">
+                    <div class="card-body">
+                        <h3 class="h5 mb-3"><i class="fas fa-tasks text-biru me-2"></i>Progress Hari Ini</h3>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Kalori</span>
+                                <span id="teks-progress-kalori">0/0 kkal</span>
+                            </div>
+                            <div class="progress progress-kita">
+                                <div id="progress-kalori" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Karbo</span>
+                                <span id="teks-progress-karbo">0/0 g</span>
+                            </div>
+                            <div class="progress progress-kita">
+                                <div id="progress-karbo" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Protein</span>
+                                <span id="teks-progress-protein">0/0 g</span>
+                            </div>
+                            <div class="progress progress-kita">
+                                <div id="progress-protein" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Lemak</span>
+                                <span id="teks-progress-lemak">0/0 g</span>
+                            </div>
+                            <div class="progress progress-kita">
+                                <div id="progress-lemak" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Panduan -->
+                <div class="card card-kita">
+                    <div class="card-body card-hasil">
+                        <h3 class="h5 mb-3"><i class="fas fa-info-circle text-biru me-2"></i>Panduan Target Gizi</h3>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="p-3 bg-light rounded">
+                                    <div class="fw-bold">Karbo</div>
+                                    <div class="h4">45-65%</div>
+                                    <p class="mb-0">Dari total kalori. Pilih karbo kompleks.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="p-3 bg-light rounded">
+                                    <div class="fw-bold">Protein</div>
+                                    <div class="h4">10-35%</div>
+                                    <p class="mb-0">Dari total kalori. Penting buat otot.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="p-3 bg-light rounded">
+                                    <div class="fw-bold">Lemak</div>
+                                    <div class="h4">20-35%</div>
+                                    <p class="mb-0">Dari total kalori. Pilih lemak sehat.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Nyolong JS dari internet -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JS kita sendiri -->
+    <script src="script.js"></script>
+</body>
+</html>
