@@ -6,7 +6,7 @@
 
 - ✅ Input makanan harian dan jumlah makronutrien
 - 📊 Visualisasi asupan dalam diagram lingkaran
-- 🎯 Penetapan target kalori dan makro harian
+- 🎯 Penetapan target kalori dan makro harian 
 - 📅 Pelacakan progres harian
 - 📱 Tampilan responsif (mobile-friendly)
 
