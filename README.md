@@ -1,24 +1,24 @@
 # 🥦 NutriTrack
 
-**NutriTrack** adalah aplikasi web pelacakan nutrisi harian yang membantu pengguna memantau asupan makronutrien (karbohidrat, protein, dan lemak), menghitung total kalori, menetapkan target harian, dan menampilkan data dalam bentuk visual seperti diagram lingkaran.
+**NutriTrack** is a web-based daily nutrition tracking app that helps users monitor their intake of macronutrients (carbohydrates, proteins, and fats), calculate total calories, set daily goals, and visualize their progress through pie charts.
 
-## 🚀 Fitur Utama
+## 🚀 Features
 
-- ✅ Input makanan harian dan jumlah makronutrien
-- 📊 Visualisasi asupan dalam diagram lingkaran
-- 🎯 Penetapan target kalori dan makro harian 
-- 📅 Pelacakan progres harian
-- 📱 Tampilan responsif (mobile-friendly)
+- ✅ Add daily food items with macronutrient values
+- 📊 Visualize nutrient intake with pie charts
+- 🎯 Set daily calorie and macro targets
+- 📅 Track daily progress
+- 📱 Responsive design (mobile-friendly)
 
-## 🛠️ Teknologi yang Digunakan
+## 🛠️ Technologies Used
 
 - HTML5
 - CSS3 + Bootstrap
 - JavaScript
-- Chart.js (untuk visualisasi diagram)
+- Chart.js (for data visualization)
 
-## 💡 Cara Menggunakan
+## 💡 How to Use
 
-1. Clone repositori ini:
+1. Clone this repository:
    ```bash
    git clone https://github.com/HugoEdmoundo/nutri-track.git
